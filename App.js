@@ -2,6 +2,8 @@ import React from 'react';
 import { Home } from "./app/views/Home";
 import { Contact } from "./app/views/Contact";
 import { createStackNavigator } from "react-navigation";
+import { Video } from './app/views/Video';
+import { VideoDetail } from './app/views/VideoDetail';
 
 const MyRoutes = createStackNavigator({
   HomeRT: {
@@ -9,6 +11,12 @@ const MyRoutes = createStackNavigator({
   },
   ContactRT: {
     screen: Contact
+  },
+  LessonRT: {
+    screen: Video
+  },
+  VideoDetailRT: {
+    screen: VideoDetail
   }
 },
 {

@@ -34,12 +34,50 @@ export class Video extends React.Component {
   };
 
   render() {
+    const { navigate } = this.props.navigation;
+
     return (
-    <View>
-        { this.state.listLoaded && (
-            <View style={{paddingTop: 30}}>
-            <View>
+      <View>
+        {this.state.listLoaded && (
+          <View style={{ paddingTop: 30 }}>
+            <FlatList
+              data={this.state.videoList}
+              renderItem={({ item }) => (
+                <TubeItem
+                  navigate={navigate}
+                  id={item.id.videoId}
+                  title={item.snippet.title}
+                  imageSrc={item.snippet.thumbnails.high.url}
+                />
+              )}
+            />
+          </View>
         )}
-    </View>);
+        {!this.state.listLoaded && (
+          <View style={{ paddingTop: 30 }}>
+            <Text> LOADING </Text>
+          </View>
+        )}
+      </View>
+    );
+  }
+}
+
+export class TubeItem extends React.Component {
+  onPress = () => {
+    this.props.navigate('VideoDetailRT',{ytubeId: this.props.id});
+  };
+
+  render() {
+    return (
+      <TouchableWithoutFeedback onPress={this.onPress}>
+        <View style={{ paddingTop: 20, alignItems: 'center' }}>
+          <Image
+            style={{ width: '100%', height: 200 }}
+            source={{ uri: this.props.imageSrc }}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    );
   }
 }
