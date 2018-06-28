@@ -1,26 +1,71 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  AsyncStorage,
+  Alert
+} from 'react-native';
 
 export class Header extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { isLoggedIn: false };
+    this.state = {
+      isLoggedIn: false,
+      loggedUser: false
+    };
   }
 
   toggleUser = () => {
-    this.setState(previousState => {
-      return { isLoggedIn: !previousState.isLoggedIn };
-    });
+
+    if(this.state.isLoggedIn) {
+      AsyncStorage.setItem('userLoggedIn', 'none',(err, result) => {
+        this.setState({
+          isLoggedIn: false,
+          loggedUser: false
+        });
+        Alert.alert('User logged out')
+      })
+    } else {
+      this.props.navigate('loginRT')
+    }
   };
 
+  componentDidMount = () => {
+    AsyncStorage.getItem('userLoggedIn', (err, result) => {
+      if(result === 'none'){
+        console.log('NONE')
+      }
+      else if(result === null) {
+        AsyncStorage.setItem('userLoggedIn', 'none', (err, result) => {
+          console.log('set user to none');
+        })
+      }
+      else{
+        this.setState({
+          isLoggedIn: true,
+          loggedUser: result
+        })
+      }
+    })
+  }
+
+
   render = () => {
-    let display = this.state.isLoggedIn ? 'Sample User' : this.props.message;
+    let display = this.state.isLoggedIn ? this.state.loggedUser : this.props.message;
+    console.log('this.state.isLoggedIn',this.state.isLoggedIn)
+    console.log('this.state.loggedUser',this.state.loggedUser)
+
     return (
       <View style={styles.headStyle}>
-      <Image style={styles.logoStyle} source={require('./img/Globo_logo_REV.png')}/>
-        <Text 
-        style={styles.headText}
-        onPress={this.toggleUser}>{display}</Text>
+        <Image
+          style={styles.logoStyle}
+          source={require('./img/Globo_logo_REV.png')}
+        />
+        <Text style={styles.headText} onPress={this.toggleUser}>
+          {display}
+        </Text>
       </View>
     );
   };
@@ -36,15 +81,15 @@ const styles = StyleSheet.create({
   headStyle: {
     paddingTop: 30,
     paddingRight: 10,
-    backgroundColor:  '#35605a',
+    backgroundColor: '#35605a',
     flex: 1,
     flexDirection: 'row',
     borderBottomWidth: 2,
     borderColor: '#000000'
   },
   logoStyle: {
-      flex: 1,
-      width: undefined,
-      height: undefined
+    flex: 1,
+    width: undefined,
+    height: undefined
   }
 });
