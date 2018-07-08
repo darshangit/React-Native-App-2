@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList, Image } from 'react-native';
 import HTML from 'react-native-render-html';
 
 export class Blog extends React.Component {
@@ -65,18 +65,22 @@ export class BlogItem extends React.Component {
   };
 
   render() {
+    const blogTagStyle = {
+      img: { display: 'none' }
+    };
+
     let blogItems = `
         <a href=${
           this.props.id
         } style="textDecorationLine: none; color: #000000; textAlign: center">
-            <img src=${this.props.imageSrc}/>
             <h1>${this.props.title}</h1>
             ${this.props.excerpt}
         </a>
         `;
 
     return (<View style={{borderBottomWidth: 2, borderBottomColor: '#000000', borderStyle: 'solid'}}>
-        <HTML html={blogItems} onLinkPress={() => this.blogChoice()}/>
+        <Image style={{width: '100%', height: 200}} source={{uri: this.props.imageSrc}}/>
+        <HTML tagsStyles={blogTagStyle} html={blogItems} onLinkPress={() => this.blogChoice()}/>
     </View>);
   }
 }

@@ -29,7 +29,7 @@ export class BlogDetail extends React.Component {
   }
 
   goBack = () => {
-    this.props.navigation.navigate('BogRT');
+    this.props.navigation.navigate('BlogRT');
   };
 
   render() {
@@ -62,7 +62,7 @@ export class BlogDetail extends React.Component {
       `;
 
       return (
-          <View style={{paddingTop: 30}}>
+          <View style={{paddingTop: 2}}>
             {
               this.state.postLoaded && (
                 <ScrollView>
